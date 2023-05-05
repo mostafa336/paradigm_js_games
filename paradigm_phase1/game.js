@@ -67,7 +67,7 @@ class XO {
             font-weight: bold;
             border: 1px solid #000;
           }
-          
+          /*
           .input-container {
             display: flex;
             align-items: center;
@@ -86,11 +86,11 @@ class XO {
       
           input[type="submit"] {
             margin-left: 10px; 
-          }
+          }*/
           </style>
           `);
         document.write('<div class="board-container">');
-        document.write('<div class="input-container">');
+      /*  document.write('<div class="input-container">');
         document.write(`
           <form>
             <label for="newRow">Row:</label>
@@ -100,7 +100,7 @@ class XO {
             <input type="submit" value="Submit">
           </form>
         `);
-        document.write('</div>');
+        document.write('</div>');*/
         document.write('<div class="board">');
         for (let i = 0; i < this.row; i++) {
           for (let j = 0; j < this.col; j++) {
@@ -111,15 +111,15 @@ class XO {
         document.write('</div>');
          // Add event listener to the form submit button
         const form = document.querySelector('form');
-        form.addEventListener('submit', (event) => {
+      /*  form.addEventListener('submit', (event) => {
            event.preventDefault();
            this.controller();
-        });
+        });*/
   }
 
   controller() {
-    const newRow = document.querySelector('#newRow').value - 1;
-    const newCol = document.querySelector('#newCol').value - 1;
+   // const newRow = document.querySelector('#newRow').value - 1;
+   // const newCol = document.querySelector('#newCol').value - 1;
   
     if (this.board[newRow][newCol] === ' ') {
         if (this.playerTurn) {
@@ -131,7 +131,7 @@ class XO {
       } else {
         alert('This place is already occupied.');
       }
-    document.querySelector('.board-container').innerHTML = '';
+    //document.querySelector('.board-container').innerHTML = '';
 
     this.drawer();
   }
@@ -182,7 +182,7 @@ class connect_4{
               background-color: white;
             }
     
-      
+      /*
             .input-container {
               display: flex;
               align-items: center;
@@ -201,11 +201,11 @@ class connect_4{
         
             input[type="submit"] {
               margin-left: 10px; 
-            }
+            }*/
           </style>
         `);
         document.write('<div class="board-container">');
-        document.write('<div class="input-container">');
+       /* document.write('<div class="input-container">');
         document.write(`
           <form>
             <label for="newCol">Column:</label>
@@ -213,7 +213,7 @@ class connect_4{
             <input type="submit" value="Submit">
           </form>
         `);
-        document.write('</div>');
+        document.write('</div>');*/
         document.write('<div class="board">');
         for (let i = this.row-1; i >=0 ; i--) {
             for (let j = 0; j < this.col; j++) {
@@ -231,16 +231,16 @@ class connect_4{
         document.write('</div>');
         document.write('</div>');
         
-        // Add event listener to the form submit button
+    /*    // Add event listener to the form submit button
         const form = document.querySelector('form');
         form.addEventListener('submit', (event) => {
           event.preventDefault();
           this.controller();
-        });
+        });*/
       }
       
   controller() {
-    const newCol = document.querySelector('#newCol').value - 1;
+    //const newCol = document.querySelector('#newCol').value - 1;
   
     if(this.boardLength[newCol] >= this.row ){
         alert('This column is full.');
@@ -259,7 +259,7 @@ class connect_4{
       } else {
         alert('This place is already occupied.');
       }
-    document.querySelector('.board-container').innerHTML = '';
+   // document.querySelector('.board-container').innerHTML = '';
     this.drawer();
   }
 }
@@ -333,7 +333,7 @@ class Chess {
         .selected {
           background-color: #ffffcc !important;
         }
-
+/*
         .input-container {
           display: flex;
           align-items: center;
@@ -352,11 +352,11 @@ class Chess {
     
         input[type="submit"] {
           margin-left: 10px; 
-        }
+        }*/
       </style>
     `);
     document.write('<div class="board-container">');
-    document.write('<div class="input-container">');
+ /*   document.write('<div class="input-container">');
     document.write(`
       <form>
         <label for="from">From:</label>
@@ -365,7 +365,7 @@ class Chess {
         <input type="number" id="To" name="To"  value="${this.to}">
         <input type="submit" value="Submit">
       </form>
-    `);
+    `);*/
     document.write('<div class="board">');
     for (let i = 0; i < this.row; i++) {
       for (let j = 0; j < this.col; j++) {
@@ -424,18 +424,18 @@ class Chess {
     document.write('</div></div>');
     document.close();
      // Add event listener to the form submit button
-     const form = document.querySelector('form');
+   /*  const form = document.querySelector('form');
      form.addEventListener('submit', (event) => {
         event.preventDefault();
         this.controller();
-     });
+     });*/
   }
 
 
   controller() {
 
-    const from = document.querySelector('#from').value ;
-    const to = document.querySelector('#to').value ;
+ //   const from = document.querySelector('#from').value ;
+ //   const to = document.querySelector('#to').value ;
 
     var fromCol =  (from % 10) -1;
     var fromRow = 8 - Math.floor(from / 10);
