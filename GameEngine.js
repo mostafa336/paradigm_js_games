@@ -1,10 +1,7 @@
 class TicTacToe{
   constructor() {
     this.playerTurn = true;
-    this.row = 3;
-    this.col = 3;
-    this.count = 0;
-    this.board = Array(this.row).fill().map(() => Array(this.col).fill(' '));
+    this.board = Array(3).fill().map(() => Array(3).fill(' '));
   }
 
   drawer() {
@@ -43,47 +40,42 @@ class TicTacToe{
 
     document.write('<div class="board-container">');
     document.write('<div class="board">');
-    for (let i = 0; i < this.row; i++) {
-      for (let j = 0; j < this.col; j++) {
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
         document.write(`<div class="board-cell" data-row="${i}" data-col="${j}">${this.board[i][j]}</div>`);
       }
     }
     document.write('</div>');
     document.write('</div>');
+    document.close();
   }
   
   controller(row, col) {
-    let newRow = row;
-    let newCol = col;
-    if((newRow != '0' && newRow != '1' && newRow != '2') || (newCol != '0' && newCol != '1' && newCol != '2')) {
+    row = parseInt(row);
+    col = parseInt(col);
+    if(isNaN(row) || isNaN(col) || row < 0 || row > 2 || col < 0 || col > 2) {
       alert('Wrong Input');
     }
-    else if (this.board[newRow][newCol] === ' ') {
+    else if (this.board[row][col] === ' ') {
       if (this.playerTurn) {
-        this.board[newRow][newCol] = 'X';
+        this.board[row][col] = 'X';
       } else {
-        this.board[newRow][newCol] = 'O';
+        this.board[row][col] = 'O';
       }
       this.playerTurn = !this.playerTurn;
-      this.count++;
-    } 
+    }
     else {
       alert('This place is already occupied.');
     }
     this.drawer();
-    if(this.count === this.row * this.col) return false;
-    return true;
   }
 }
 
 class Connect4{
   constructor(){
-    this.playerTurn=true;  
-    this.row = 6;
-    this.col = 7;
-    this.count = 0;
-    this.board = Array(this.row).fill().map(() => Array(this.col).fill(' '));
-    this.boardLength= new Array(this.col);
+    this.playerTurn=true;
+    this.board = Array(6).fill().map(() => Array(7).fill(' '));
+    this.boardLength= new Array(7);
     this.boardLength.fill(0);
   }
 
@@ -100,11 +92,11 @@ class Connect4{
   
         .board {
           display: grid;
-          grid-template-columns: repeat(${this.col}, 70px);
-          grid-template-rows: repeat(${this.row}, 70px);
+          grid-template-columns: repeat(${7}, 70px);
+          grid-template-rows: repeat(${6}, 70px);
           background-color: blue;
-          width: calc(70px * ${this.col});
-          height: calc(70px * ${this.row});
+          width: calc(70px * ${7});
+          height: calc(70px * ${6});
           border: 2px solid #000;
           border-collapse: collapse;
         }
@@ -125,8 +117,8 @@ class Connect4{
 
     document.write('<div class="board-container">');
     document.write('<div class="board">');
-    for (let i = this.row-1; i >=0 ; i--) {
-        for (let j = 0; j < this.col; j++) {
+    for (let i = 5; i >=0 ; i--) {
+        for (let j = 0; j < 7; j++) {
           let cellValue = this.board[i][j];
           let backgroundColor = "white";
           if (cellValue === "X") {
@@ -140,33 +132,31 @@ class Connect4{
     }
     document.write('</div>');
     document.write('</div>');
+    document.close();
   }
 
   controller(col) {
-    let newCol = col;
-    if(newCol != '0' && newCol != '1' && newCol != '2' && newCol != '3' && newCol != '4' && newCol != '5' && newCol != '6'){
+    col = parseInt(col);
+    if(isNaN(col) || col < 0 || col > 6){
       alert('Wrong Input');
     }
-    else if(this.boardLength[newCol] >= this.row){
+    else if(this.boardLength[col] >= 6){
       alert('This column is full.');
     }
-    else if( this.board[this.boardLength[newCol]][newCol]==' ') {
+    else if( this.board[this.boardLength[col]][col]==' ') {
       if (this.playerTurn) {
-        this.board[this.boardLength[newCol]][newCol] = 'X';
-        this.boardLength[newCol]++;
+        this.board[this.boardLength[col]][col] = 'X';
+        this.boardLength[col]++;
       } else {
-          this.board[this.boardLength[newCol]][newCol] = 'O';
-          this.boardLength[newCol]++;
+        this.board[this.boardLength[col]][col] = 'O';
+        this.boardLength[col]++;
       }
       this.playerTurn = !this.playerTurn;
-      this.count++;
     } 
     else {
       alert('This place is already occupied.');
     }
     this.drawer();
-    if(this.count === this.row * this.col) return false;
-    return true;
   }
 }
 
@@ -182,13 +172,6 @@ class Checkers{
       [' ', 'w', ' ', 'w', ' ', 'w', ' ', 'w'],
       ['w', ' ', 'w', ' ', 'w', ' ', 'w', ' ']
     ];
-    this.playerTurn = true;
-    this.validMoves = [];
-    this.selectedPiece = null;
-    this.row = 8;
-    this.col = 8;
-    this.from = 0;
-    this.to = 0;
   }
   drawer() {
     document.open();
@@ -234,8 +217,8 @@ class Checkers{
 
     document.write('<div class="board-container">');
     document.write('<div class="board">');
-    for (let i = 0; i < this.row; i++) {
-      for (let j = 0; j < this.col; j++) {
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
         let cellValue = this.board[i][j];
         let cellClasses = 'board-cell';
         if ((i + j) % 2 === 0) {
@@ -265,6 +248,7 @@ class Checkers{
 
 class Chess{
   constructor() {
+    this.playerTurn = true;
     this.board = [      
       ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
       ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
@@ -275,13 +259,8 @@ class Chess{
       ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
       ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r']
     ];
-    this.playerTurn = true;
     this.validMoves = [];
     this.selectedPiece = null;
-    this.row = 8;
-    this.col = 8;
-    this.from = 0;
-    this.to = 0;
   }
   drawer() {
     document.open();
@@ -327,8 +306,8 @@ class Chess{
 
     document.write('<div class="board-container">');
     document.write('<div class="board">');
-    for (let i = 0; i < this.row; i++) {
-      for (let j = 0; j < this.col; j++) {
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
         let cellValue = this.board[i][j];
         let cellClasses = 'board-cell';
         if ((i + j) % 2 === 0) {
@@ -386,13 +365,12 @@ class Chess{
   }
 
   controller(fromRow, fromCol, toRow, toCol) {
-
-    if( !(0<=fromCol&&fromCol<=7 && 0<=fromRow && fromRow<=7 && 0<=toCol&&toCol<=7 &&0<=toRow&&toRow<=7) ){
-      alert(`Enter correct index`);
-      this.drawer();
-      return;
+    fromRow = parseInt(fromRow); fromCol = parseInt(fromCol);
+    toRow = parseInt(toRow); toCol = parseInt(toCol);
+    if(isNaN(fromRow) || isNaN(fromCol) || isNaN(toRow) || isNaN(toCol) || fromRow > 7 || fromRow < 0 || fromCol > 7 || fromCol < 0 || toRow > 7 || toRow < 0 || toCol > 7 || toCol < 0){
+      alert('Wrong Input');
     }
-    if( ('A'<=this.board[fromRow][fromCol] && this.board[fromRow][fromCol]<='Z') ||('a'<=this.board[fromRow][fromCol] && this.board[fromRow][fromCol]<='z') ){
+    else if( ('A'<=this.board[fromRow][fromCol] && this.board[fromRow][fromCol]<='Z') ||('a'<=this.board[fromRow][fromCol] && this.board[fromRow][fromCol]<='z') ){
         if((  'a'<=this.board[fromRow][fromCol] && this.board[fromRow][fromCol]<='z') ||
           (  'A'<=this.board[fromRow][fromCol] && this.board[fromRow][fromCol]<='Z')){ 
             //queen   Q or q    وزرير
@@ -629,9 +607,17 @@ class Chess{
 
 class Sudoku{
   constructor() {
-    this.row = 9;
-    this.col = 9;
-    this.board = Array(this.row).fill().map(() => Array(this.col).fill(' '));
+    this.board = [
+      [' ', ' ', '9', ' ', ' ', '2', ' ', ' ', ' '],
+      ['3', ' ', ' ', '9', ' ', '8', ' ', '5', '2'],
+      ['2', ' ', ' ', ' ', '7', ' ', ' ', ' ', ' '],
+      [' ', ' ', ' ', ' ', ' ', '6', ' ', '9', ' '],
+      [' ', '7', '2', ' ', '1', ' ', '8', '3', ' '],
+      [' ', '3', ' ', '2', ' ', ' ', ' ', ' ', ' '],
+      [' ', ' ', ' ', ' ', '8', ' ', ' ', ' ', '1'],
+      ['7', '1', ' ', '6', ' ', '5', ' ', ' ', '8'],
+      [' ', ' ', ' ', '4', ' ', ' ', '5', ' ', ' ']
+    ]
   }
 
   drawer() {
@@ -681,13 +667,62 @@ class Sudoku{
 
     document.write('<div class="board-container">');
     document.write('<div class="board">');
-    for (let i = 0; i < this.row; i++) {
-      for (let j = 0; j < this.col; j++) {
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < 9; j++) {
         document.write(`<div class="board-cell" data-row="${i}" data-col="${j}">${this.board[i][j]}</div>`);
       }
     }
     document.write('</div>');
     document.write('</div>');
+  }
+
+  checkRow(row, num){
+    for(let i = 0; i < 9; i++){
+      let tmp = parseInt(this.board[row][i]);
+      if(isNaN(tmp)) continue;
+      if(num === tmp) return false;
+    }
+    return true;
+  }
+  checkCol(col, num){
+    for(let i = 0; i < 9; i++){
+      let tmp = parseInt(this.board[i][col]);
+      if(isNaN(tmp)) continue;
+      if(num === tmp) return false;
+    }
+    return true;
+  }
+  checkBox(row, col, num){
+    let startRow = Math.floor(row / 3.0) * 3;
+    let endRow = startRow + 2;
+    let startCol = Math.floor(col / 3.0) * 3;
+    let endCol = startCol + 2;
+    for(let i = startRow; i <= endRow; i++){
+      for(let j = startCol; j <= endCol; j++){
+        let tmp = parseInt(this.board[i][j]);
+        if(isNaN(tmp)) continue;
+        if(num === tmp) return false;
+      }
+    }
+    return true;
+  }
+  controller(row, col, num){
+    row = parseInt(row); col = parseInt(col); num = parseInt(num);
+    if(isNaN(row) || isNaN(col) || isNaN(num) || row < 0 || row > 8 || col < 0 || col > 8 || num < 1 || num > 9){
+      alert('Wrong Input');
+    }
+    else if(this.board[row][col] === ' '){
+      if(this.checkRow(row, num) && this.checkCol(col, num) && this.checkBox(row, col, num)){
+        this.board[row][col] = num;
+      }
+      else{
+        alert('Wrong Play...');
+      }
+    }
+    else{
+      alert('This place is already occupied.');
+    }
+    this.drawer();
   }
 }
 
@@ -700,67 +735,83 @@ async function gameLoop(){
   await new Promise(resolve => setTimeout(resolve, 1000));
   while(true){
     while(true){
-      var c1 = prompt('1- TicTacToe \n2- Connect4 \n3- Checkers \n4- Chess \n5- Sudoku \n6- EightQueens \n7- Exit');
-      if(c1 === '1' || c1 === '2' || c1 === '3' || c1 === '4' || c1 === '5' || c1 === '6' || c1 === '7') break;
+      var check = prompt('1- TicTacToe \n2- Connect4 \n3- Checkers \n4- Chess \n5- Sudoku \n6- EightQueens \n7- Exit');
+      check = parseInt(check);
+      if(check >= 1 && check <= 7) break;
     }
-    if(c1 === '7') break;
+    if(check === 7) break;
     var game;
-    switch(c1){
-      case('1'):{
+    switch(check){
+      case(1):{
         game = new TicTacToe(); break;
       }
-      case('2'):{
+      case(2):{
         game = new Connect4(); break;
       }
-      case('3'):{
+      case(3):{
         game = new Checkers(); break;
       }
-      case('4'):{
+      case(4):{
         game = new Chess(); break;
       }
-      case('5'):{
+      case(5):{
         game = new Sudoku(); break;
       }
-      case('6'):{
+      case(6):{
         game = new EightQueens(); break;
       }
     }
     game.drawer();
     await new Promise(resolve => setTimeout(resolve, 500));
-    while(true){
-      let flag;
-      switch(c1){
-        case('1'):{
-          let row = prompt('Please, Enter a cell row');
+    let play = true;
+    while(play){
+      switch(check){
+        case(1):{
+          let row = prompt('Please, Enter a cell row (enter E to Exit)');
+          if(row === 'E') {
+            play = false; break;
+          }
           let col = prompt('Please, Enter a cell column');
-          flag = game.controller(row, col);
+          game.controller(row, col);
           break;
         }
-        case('2'):{
-          let col = prompt('Please, Enter a cell column');
-          flag = game.controller(col);
+        case(2):{
+          let col = prompt('Please, Enter a cell column (enter E to Exit)');
+          if(col === 'E'){
+            play = false; break;
+          }
+          game.controller(col);
           break;
         }
-        case('3'):{
+        case(3):{
           break;
         }
-        case('4'):{
-          let fromRow = prompt('Please, Enter a cell row to move from');
+        case(4):{
+          let fromRow = prompt('Please, Enter a cell row to move from (enter E to Exit)');
+          if(fromRow === 'E'){
+            play = false; break;
+          }
           let fromCol = prompt('Please, Enter a cell column to move from');
           let toRow = prompt('Please, Enter a cell row to move to');
           let toCol = prompt('Please, Enter a cell column to move to');
-          flag = game.controller(fromRow, fromCol, toRow, toCol);
+          game.controller(fromRow, fromCol, toRow, toCol);
           break;
         }
-        case('5'):{
+        case(5):{
+          let row = prompt('Please, Enter a cell row (enter E to Exit)');
+          if(row === 'E'){
+            play = false; break;
+          }
+          let col = prompt('Please, Enter a cell column');
+          let num = prompt('Please, Enter a number from 1 to 9');
+          game.controller(row, col, num);
           break;
         }
-        case('6'):{
+        case(6):{
           break;
         }
       }
       await new Promise(resolve => setTimeout(resolve, 500));
-      if(!flag) break;
     }
   }
 }
