@@ -13,172 +13,169 @@ class gameEngine{
       throw new Error('Method "controller" must be implemented');
    }
 
-async Game_loop(){
- await new Promise(resolve => setTimeout(resolve, 1000));
- while(true){
-   while(true){
-     var check = prompt('1- TicTacToe \n2- Connect4 \n3- Checkers \n4- Chess \n5- Sudoku \n6- EightQueens \n7- Exit');
-     check = parseInt(check);
-     if(check >= 1 && check <= 7) break;
-   }
-   if(check === 7) break;
-   var game;
-   switch(check){
-     case(1):{
-       this.board = [
-            [' ',' ',' '],
-            [' ',' ',' '],
-            [' ',' ',' ']
-       ];
-       game = new TicTacToe(); break;
-     }
-     case(2):{
-       this.board = Array(6).fill().map(() => Array(7).fill(' '));
-       game = new Connect4(); break;
-     }
-     case(3):{
-       this.board = [      
-         [' ', 'b', ' ', 'b', ' ', 'b', ' ', 'b'],
-         ['b', ' ', 'b', ' ', 'b', ' ', 'b', ' '],
-         [' ', 'b', ' ', 'b', ' ', 'b', ' ', 'b'],
-         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-         ['w', ' ', 'w', ' ', 'w', ' ', 'w', ' '],
-         [' ', 'w', ' ', 'w', ' ', 'w', ' ', 'w'],
-         ['w', ' ', 'w', ' ', 'w', ' ', 'w', ' ']
-       ];
-       game = new Checkers(); break;
-     }
-     case(4):{
-       this.board = [      
-         ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
-         ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
-         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-         ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
-         ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r']
-       ];
-       game = new Chess(); break;
-     }
-     case(5):{
-       this.board = [
-         [' ', ' ', '9', ' ', ' ', '2', ' ', ' ', ' '],
-         ['3', ' ', ' ', '9', ' ', '8', ' ', '5', '2'],
-         ['2', ' ', ' ', ' ', '7', ' ', ' ', ' ', ' '],
-         [' ', ' ', ' ', ' ', ' ', '6', ' ', '9', ' '],
-         [' ', '7', '2', ' ', '1', ' ', '8', '3', ' '],
-         [' ', '3', ' ', '2', ' ', ' ', ' ', ' ', ' '],
-         [' ', ' ', ' ', ' ', '8', ' ', ' ', ' ', '1'],
-         ['7', '1', ' ', '6', ' ', '5', ' ', ' ', '8'],
-         [' ', ' ', ' ', '4', ' ', ' ', '5', ' ', ' ']
-       ]
-       game = new Sudoku(); break;
-     }
-     case(6):{
-       this.board = [      
-         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
-       ];
-       game = new EightQueens(); 
-       break;
-     }
-   }
-   game.drawer(this.board);
-   await new Promise(resolve => setTimeout(resolve, 500));
-   let play = true;
-   while(play){
-     let result=null;
-     switch(check){
-       //XO
-       case(1):{
-         let row = prompt('Please, Enter a cell row (enter E to Exit)');
-         if(row === 'E') {
-           play = false; break;
-         }
-         let col = prompt('Please, Enter a cell column');
-         result=game.controller(this.board,row, col,this.playerTurn);
-         break;
-       }
-       //connect4
-       case(2):{
-         let col = prompt('Please, Enter a cell column (enter E to Exit)');
-         if(col === 'E'){
-           play = false; break;
-         }
-         result=game.controller(this.board, col,this.playerTurn);
-         break;
-       }
-       //checker
-       case(3):{
-        let fromRow = prompt('Please, Enter a cell row to move from (enter E to Exit)');
-        if(fromRow === 'E'){
-          play = false; break;
+  async Game_loop(){
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    while(true){
+      while(true){
+        var check = prompt('1- TicTacToe \n2- Connect4 \n3- Checkers \n4- Chess \n5- Sudoku \n6- EightQueens \n7- Exit');
+        check = parseInt(check);
+        if(check >= 1 && check <= 7) break;
+      }
+      if(check === 7) break;
+      var game;
+      switch(check){
+        case(1):{
+          this.board = [
+                [' ',' ',' '],
+                [' ',' ',' '],
+                [' ',' ',' ']
+          ];
+          game = new TicTacToe(); break;
         }
-        let fromCol = prompt('Please, Enter a cell column to move from');
-        let toRow = prompt('Please, Enter a cell row to move to');
-        let toCol = prompt('Please, Enter a cell column to move to');
-        result=game.controller(this.board,fromRow, fromCol, toRow, toCol,this.playerTurn);
-        break;
-       }
-       //chess
-       case(4):{
-         let fromRow = prompt('Please, Enter a cell row to move from (enter E to Exit)');
-         if(fromRow === 'E'){
-           play = false; break;
-         }
-         let fromCol = prompt('Please, Enter a cell column to move from');
-         let toRow = prompt('Please, Enter a cell row to move to');
-         let toCol = prompt('Please, Enter a cell column to move to');
-         result=game.controller(this.board,fromRow, fromCol, toRow, toCol,this.playerTurn);
-         break;
-       }
-       //sudoko
-       case(5):{
-         let row = prompt('Please, Enter a cell row (enter E to Exit)');
-         if(row === 'E'){
-           play = false; break;
-         }
-         let col = prompt('Please, Enter a cell column');
-         let num = prompt('Please, Enter a number from 1 to 9');
-         result= game.controller(this.board,row, col, num);
-         break;
-       }
-       //8-queens
-       case(6):{
-         let Row = prompt('Please, Enter a cell row (enter E to Exit)');
-         if(Row === 'E'){
-           play = false; break;
-         }
-         let Col = prompt('Please, Enter a cell column');
-         result=game.controller(this.board,Row,Col);
-         break;
-       }
-     }
-     if(play==true){
-        if(result.f!=7){
-                Alerts(result.f);
-        }else if(result.f==7){
-            this.board=result.BD;
-            game.drawer(this.board);
-            this.playerTurn=!this.playerTurn;
+        case(2):{
+          this.board = Array(6).fill().map(() => Array(7).fill(' '));
+          game = new Connect4(); break;
         }
-     }
-    await new Promise(resolve => setTimeout(resolve, 500));
-   }
+        case(3):{
+          this.board = [      
+            [' ', 'b', ' ', 'b', ' ', 'b', ' ', 'b'],
+            ['b', ' ', 'b', ' ', 'b', ' ', 'b', ' '],
+            [' ', 'b', ' ', 'b', ' ', 'b', ' ', 'b'],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+            ['w', ' ', 'w', ' ', 'w', ' ', 'w', ' '],
+            [' ', 'w', ' ', 'w', ' ', 'w', ' ', 'w'],
+            ['w', ' ', 'w', ' ', 'w', ' ', 'w', ' ']
+          ];
+          game = new Checkers(); break;
+        }
+        case(4):{
+          this.board = [      
+            ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
+            ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+            ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
+            ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r']
+          ];
+          game = new Chess(); break;
+        }
+        case(5):{
+          this.board = [
+            [' ', ' ', '9', ' ', ' ', '2', ' ', ' ', ' '],
+            ['3', ' ', ' ', '9', ' ', '8', ' ', '5', '2'],
+            ['2', ' ', ' ', ' ', '7', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' ', '6', ' ', '9', ' '],
+            [' ', '7', '2', ' ', '1', ' ', '8', '3', ' '],
+            [' ', '3', ' ', '2', ' ', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', '8', ' ', ' ', ' ', '1'],
+            ['7', '1', ' ', '6', ' ', '5', ' ', ' ', '8'],
+            [' ', ' ', ' ', '4', ' ', ' ', '5', ' ', ' ']
+          ]
+          game = new Sudoku(); break;
+        }
+        case(6):{
+          this.board = [      
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+          ];
+          game = new EightQueens(); 
+          break;
+        }
+      }
+      game.drawer(this.board);
+      await new Promise(resolve => setTimeout(resolve, 500));
+      let play = true;
+      while(play){
+        let result=null;
+        switch(check){
+          //XO
+          case(1):{
+            let row = prompt('Please, Enter a cell row (enter E to Exit)');
+            if(row === 'E') {
+              play = false; break;
+            }
+            let col = prompt('Please, Enter a cell column');
+            result=game.controller(this.board,row, col,this.playerTurn);
+            break;
+          }
+          //connect4
+          case(2):{
+            let col = prompt('Please, Enter a cell column (enter E to Exit)');
+            if(col === 'E'){
+              play = false; break;
+            }
+            result=game.controller(this.board, col,this.playerTurn);
+            break;
+          }
+          //checker
+          case(3):{
+            let fromRow = prompt('Please, Enter a cell row to move from (enter E to Exit)');
+            if(fromRow === 'E'){
+              play = false; break;
+            }
+            let fromCol = prompt('Please, Enter a cell column to move from');
+            let toRow = prompt('Please, Enter a cell row to move to');
+            let toCol = prompt('Please, Enter a cell column to move to');
+            result=game.controller(this.board,fromRow, fromCol, toRow, toCol,this.playerTurn);
+            break;
+          }
+          //chess
+          case(4):{
+            let fromRow = prompt('Please, Enter a cell row to move from (enter E to Exit)');
+            if(fromRow === 'E'){
+              play = false; break;
+            }
+            let fromCol = prompt('Please, Enter a cell column to move from');
+            let toRow = prompt('Please, Enter a cell row to move to');
+            let toCol = prompt('Please, Enter a cell column to move to');
+            result=game.controller(this.board,fromRow, fromCol, toRow, toCol,this.playerTurn);
+            break;
+          }
+          //sudoko
+          case(5):{
+            let row = prompt('Please, Enter a cell row (enter E to Exit)');
+            if(row === 'E'){
+              play = false; break;
+            }
+            let col = prompt('Please, Enter a cell column');
+            let num = prompt('Please, Enter a number from 1 to 9');
+            result= game.controller(this.board,row, col, num);
+            break;
+          }
+          //8-queens
+          case(6):{
+            let Row = prompt('Please, Enter a cell row (enter E to Exit)');
+            if(Row === 'E'){
+              play = false; break;
+            }
+            let Col = prompt('Please, Enter a cell column');
+            result=game.controller(this.board,Row,Col);
+            break;
+          }
+        }
+        if(play==true){
+            if(result.f!=7){
+              Alerts(result.f);
+            }else if(result.f==7){
+              this.board=result.BD;
+              game.drawer(this.board);
+              this.playerTurn=!this.playerTurn;
+            }
+        }
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+    }
   }
-
 }
-
-}
-
 
 class TicTacToe extends gameEngine{
 
@@ -186,33 +183,55 @@ class TicTacToe extends gameEngine{
     document.open(board);
     document.write(`
       <style>
-      .board-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-      }
-      
-      .board {
-        display: grid;
-        grid-template-columns: repeat(3, 100px);
-        grid-template-rows: repeat(3, 100px);
-        width: 70%;
-        max-width: 300px;
-        height: 70%;
-        max-height: 300px;
-        border: 5px solid #000;
-        border-collapse: collapse;
-      }
-      
-      .board-cell {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 5em;
-        font-weight: bold;
-        border: 1px solid #000;
-      }
+        body {
+          height: 100%;
+          margin: 0;
+          font-family: 'Finger Paint', cursive;
+        }
+        
+        /* Style the board container with the background image */
+        .board-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100%;
+          background-image: url('assets/backgrounds/xo.png');
+          background-repeat: 2;
+          background-size: contain;
+        }
+
+        /* Style the board */
+        .board {
+          display: grid;
+          grid-template-columns: repeat(3, 100px);
+          grid-template-rows: repeat(3, 100px);
+          width: 100%;
+          max-width: 300px;
+          height: 100%;
+          max-height: 300px;
+          box-shadow: 0 0 30px #626b74; /* Add a subtle box shadow */
+          background-color: #fff; /* Add a white background color */
+        }
+        
+        #pos{
+          position: relative;
+          bottom: 40%;
+          right: 40%;
+          color: #191919;
+          font-size: 0.75rem;
+        }
+
+        /* Style the board cells */
+        .board-cell {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 5em;
+          font-weight: bold;
+          border: 1px solid #000;
+          color: #000; /* Set the text color to black */
+          transition: background-color 0.2s ease-in-out; /* Add a smooth transition */
+        }
       </style>
     `);
 
@@ -220,6 +239,9 @@ class TicTacToe extends gameEngine{
     document.write('<div class="board">');
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
+        if(board[i][j] === ' '){
+          document.write(`<div class="board-cell" data-row="${i}" data-col="${j}"><span id="pos">${i}${j}</span></div>`); continue;
+        }
         document.write(`<div class="board-cell" data-row="${i}" data-col="${j}">${board[i][j]}</div>`);
       }
     }
@@ -257,11 +279,20 @@ class Connect4 extends gameEngine{
     document.open();
     document.write(`
       <style>
+        body {
+          height: 100%;
+          margin: 0;
+          font-family: 'Finger Paint', cursive;
+        }
+
         .board-container {
           display: flex;
           justify-content: center;
           align-items: center;
-          height: 100vh;
+          background-image: url('assets/backgrounds/checkers.jpg');
+          background-repeat: 2;
+          background-size: contain;
+          height: 120vh;
         }
   
         .board {
@@ -273,6 +304,7 @@ class Connect4 extends gameEngine{
           height: calc(70px * ${6});
           border: 2px solid #000;
           border-collapse: collapse;
+          box-shadow: 0 0 30px #626b74; /* Add a subtle box shadow */
         }
         
         .board-cell {
@@ -281,7 +313,6 @@ class Connect4 extends gameEngine{
           justify-content: center;
           align-items: center;
           font-size: 0em;
-         // font-weight: bold;
           border: 1px solid #000;
           border-radius: 50%;
           background-color: white;
@@ -339,9 +370,6 @@ class Connect4 extends gameEngine{
 
     return { BD: board, f: 7 };
   }
-  
-
-
 }
 
 class Checkers extends gameEngine{
@@ -350,11 +378,19 @@ class Checkers extends gameEngine{
     document.open();
     document.write(`
       <style>
+        body {
+          height: 100%;
+          margin: 0;
+          font-family: 'Finger Paint', cursive;
+        }
         .board-container {
           display: flex;
           justify-content: center;
           align-items: center;
           height: 120vh;
+          background-image: url('assets/backgrounds/checkers.jpg');
+          background-repeat: 2;
+          background-size: contain;
         }
         .board {
           display: grid;
@@ -366,6 +402,8 @@ class Checkers extends gameEngine{
           height: calc(70px * 8);
           border: 2px solid #000;
           border-collapse: collapse;
+          box-shadow: 0 0 30px #626b74; /* Add a subtle box shadow */
+          background-color: #fff; /* Add a white background color */
         }
         .board-cell {
           display: flex;
@@ -417,6 +455,7 @@ class Checkers extends gameEngine{
     document.write('</div></div>');
     document.close();
   }
+
   controller(board,fromRow, fromCol, toRow, toCol,playerTurn) {
     fromRow = parseInt(fromRow); fromCol = parseInt(fromCol);
     toRow = parseInt(toRow); toCol = parseInt(toCol);
@@ -425,52 +464,60 @@ class Checkers extends gameEngine{
       return { BD: board, f: 0 };
     }
     else if( board[fromRow][fromCol]!='b' && board[fromRow][fromCol]!='w') {
-              return { BD: board, f: 2 };
+      return { BD: board, f: 2 };
     }
-    else if( (playerTurn && board[fromRow][fromCol]=='b') ||
-          (!playerTurn && board[fromRow][fromCol]=='w') ){
-                
-                 if(board[fromRow][fromCol]=='b'){
-                      if( fromRow+1==toRow && (fromCol+1==toCol || fromCol-1== toCol) && board[toRow][toCol]==' '){
-                          board[toRow][toCol]=board[fromRow][fromCol];
-                          board[fromRow][fromCol]=' ';
-                          return { BD: board, f: 7 };
-                      }else if( fromRow+2==toRow &&( (fromCol+2==toCol &&board[fromRow+1][fromCol+1]=='w')
-                              ||(fromCol-2==toCol && board[fromRow+1][fromCol-1]=='w') )
-                              && board[toRow][toCol]==' '){
-                          if(toCol<fromCol){board[fromRow+1][fromCol-1]=' ';}        
-                          else{ board[fromRow+1][fromCol+1]=' ';}
-                          board[toRow][toCol]=board[fromRow][fromCol];
-                          board[fromRow][fromCol]=' ';
-                          return { BD: board, f: 7 };
-                      }else{
-                        return { BD: board, f: 6 };
-                      }
-
-                }else if(board[fromRow][fromCol]=='w'){
-                  if( fromRow-1==toRow && (fromCol+1==toCol || fromCol-1== toCol) && board[toRow][toCol]==' '){
-                      board[toRow][toCol]=board[fromRow][fromCol];
-                      board[fromRow][fromCol]=' ';
-                      return { BD: board, f: 7 };
-
-                  }else if( fromRow-2==toRow &&( (fromCol+2==toCol &&board[fromRow-1][fromCol+1]=='b')
-                          ||(fromCol-2==toCol && board[fromRow-1][fromCol-1]=='b') )
-                            && board[toRow][toCol]==' '){
-                      if(toCol<fromCol){board[fromRow-1][fromCol-1]=' ';}        
-                      else{ board[fromRow-1][fromCol+1]=' ';}
-                      board[toRow][toCol]=board[fromRow][fromCol];
-                      board[fromRow][fromCol]=' ';
-                      return { BD: board, f: 7 };
-                  }else{
-                    return { BD: board, f: 6 };
-                  }
-                }
-    }else{
+    else if( (playerTurn && board[fromRow][fromCol]=='b') || (!playerTurn && board[fromRow][fromCol]=='w') ){
+      if(board[fromRow][fromCol]=='b'){
+        if( fromRow+1==toRow && (fromCol+1==toCol || fromCol-1== toCol) && board[toRow][toCol]==' '){
+          board[toRow][toCol]=board[fromRow][fromCol];
+          board[fromRow][fromCol]=' ';
+          return { BD: board, f: 7 };
+        }
+        else if( fromRow+2==toRow &&( (fromCol+2==toCol &&board[fromRow+1][fromCol+1]=='w')
+                ||(fromCol-2==toCol && board[fromRow+1][fromCol-1]=='w') )
+                && board[toRow][toCol]==' '){
+          if(toCol<fromCol){
+            board[fromRow+1][fromCol-1]=' ';
+          } 
+          else{ 
+            board[fromRow+1][fromCol+1]=' ';
+          }
+          board[toRow][toCol]=board[fromRow][fromCol];
+          board[fromRow][fromCol]=' ';
+          return { BD: board, f: 7 };
+        }
+        else{
+          return { BD: board, f: 6 };
+        }
+      }
+      else if(board[fromRow][fromCol]=='w'){
+        if( fromRow-1==toRow && (fromCol+1==toCol || fromCol-1== toCol) && board[toRow][toCol]==' '){
+          board[toRow][toCol]=board[fromRow][fromCol];
+          board[fromRow][fromCol]=' ';
+          return { BD: board, f: 7 };
+        }
+        else if( fromRow-2==toRow &&( (fromCol+2==toCol &&board[fromRow-1][fromCol+1]=='b')
+                ||(fromCol-2==toCol && board[fromRow-1][fromCol-1]=='b') )
+                && board[toRow][toCol]==' '){
+          if(toCol<fromCol){
+            board[fromRow-1][fromCol-1]=' ';
+          }   
+          else{
+            board[fromRow-1][fromCol+1]=' ';
+          }
+          board[toRow][toCol]=board[fromRow][fromCol];
+          board[fromRow][fromCol]=' ';
+          return { BD: board, f: 7 };
+        }
+        else{
+          return { BD: board, f: 6 };
+        }
+      }
+    }
+    else{
       return { BD: board, f: 3 };
     }
-
   }
- 
 }
 
 class Chess extends gameEngine{
@@ -479,11 +526,19 @@ class Chess extends gameEngine{
     document.open();
     document.write(`
       <style>
+        body {
+          height: 100%;
+          margin: 0;
+          font-family: 'Finger Paint', cursive;
+        }
         .board-container {
           display: flex;
           justify-content: center;
           align-items: center;
           height: 120vh;
+          background-image: url('assets/backgrounds/chess.jpg');
+          background-repeat: 2;
+          background-size: contain;
         }
         .board {
           display: grid;
@@ -495,6 +550,8 @@ class Chess extends gameEngine{
           height: calc(70px * 8);
           border: 2px solid #000;
           border-collapse: collapse;
+          box-shadow: 0 0 30px #626b74; /* Add a subtle box shadow */
+          background-color: #fff; /* Add a white background color */
         }
         .board-cell {
           display: flex;
@@ -863,24 +920,29 @@ class Chess extends gameEngine{
         //alert(`you cannot choose this item`);
         return { BD: board, f: 3 };
     }
-
-
   }
-
 }
 
 class Sudoku extends gameEngine{
   
-
   drawer(board) {
     document.open();
     document.write(`
       <style>
+        body {
+          height: 100%;
+          margin: 0;
+          font-family: 'Finger Paint', cursive;
+        }
+
         .board-container {
           display: flex;
           justify-content: center;
           align-items: center;
-          height: 100vh;
+          height: 120vh;
+          background-image: url('assets/backgrounds/checkers.jpg');
+          background-repeat: 2;
+          background-size: contain;
         }
         
         .board {
@@ -890,6 +952,7 @@ class Sudoku extends gameEngine{
           grid-gap: 1px;
           background-color: #e0e0e0;
           padding: 20px;
+          box-shadow: 0 0 30px #626b74; /* Add a subtle box shadow */
         }
         
         .board-cell {
@@ -899,8 +962,8 @@ class Sudoku extends gameEngine{
           border: 1px solid #000000;
           justify-content: center;
           align-items: center;
-          height: 60px;
-          width: 60px;
+          height: 50px;
+          width: 50px;
         }
         
         .board-cell[data-row="2"], 
@@ -987,11 +1050,19 @@ class EightQueens extends gameEngine{
     document.open();
     document.write(`
       <style>
+        body {
+          height: 100%;
+          margin: 0;
+          font-family: 'Finger Paint', cursive;
+        }
         .board-container {
           display: flex;
           justify-content: center;
           align-items: center;
           height: 120vh;
+          background-image: url('assets/backgrounds/chess.jpg');
+          background-repeat: 2;
+          background-size: contain;
         }
         .board {
           display: grid;
@@ -1003,6 +1074,8 @@ class EightQueens extends gameEngine{
           height: calc(70px * 8);
           border: 2px solid #000;
           border-collapse: collapse;
+          box-shadow: 0 0 30px #626b74; /* Add a subtle box shadow */
+          background-color: #fff; /* Add a white background color */
         }
         .board-cell {
           display: flex;
@@ -1050,8 +1123,6 @@ class EightQueens extends gameEngine{
     document.close();
   }
  
-  
-
   controller(board,Row, Col) {
     Row = parseInt(Row); Col = parseInt(Col);
     if(isNaN(Row) || isNaN(Col) || Row > 7 || Row < 0 || Col > 7 || Col < 0 ){
@@ -1059,26 +1130,26 @@ class EightQueens extends gameEngine{
       return { BD: board, f: 0 };
     }
     else if( board[Row][Col] =='Q'){
-          return { BD: board, f: 1 };
-    }else if(board[Row][Col]=='n'){
-          return{ BD: board, f: 9 };
-    }else{
-           board[Row][Col]='Q';
-           //get all valid cells that can queen move to and write it in array as n
-           for (let i = 0; i < 8; i++) {
-            for (let j = 0; j < 8; j++) {
-              if (board[i][j] != 'Q') {
-                if (i == Row || j == Col || i - j == Row - Col || i + j == Row + Col) {
-                  board[i][j] = 'n';
-                }
-              }
+      return { BD: board, f: 1 };
+    }
+    else if(board[Row][Col]=='n'){
+      return{ BD: board, f: 9 };
+    }
+    else{
+      board[Row][Col]='Q';
+      //get all valid cells that can queen move to and write it in array as n
+      for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+          if (board[i][j] != 'Q') {
+            if (i == Row || j == Col || i - j == Row - Col || i + j == Row + Col) {
+              board[i][j] = 'n';
             }
           }
-          return{ BD: board, f: 7 };
+        }
+      }
+      return{ BD: board, f: 7 };
     }
-  
   }
-
 }
 
 function Alerts(i){
