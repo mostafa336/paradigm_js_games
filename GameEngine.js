@@ -323,17 +323,18 @@ class Connect4 extends gameEngine{
     document.write('<div class="board-container">');
     document.write('<div class="board">');
     for (let i = 0; i <=5 ; i++) {
-        for (let j = 0; j < 7; j++) {
-          let cellValue = board[i][j];
-          let backgroundColor = "white";
-          if (cellValue === "X") {
-            backgroundColor = "yellow";
-          } else if (cellValue === "O") {
-            backgroundColor = "red";
-          }
-          let cell = `<div class="board-cell" data-row="${i}" data-col="${j}" style="background-color:${backgroundColor}">${cellValue}</div>`;
-          document.write(cell);
+      for (let j = 0; j < 7; j++) {
+        let cellValue = board[i][j];
+        let backgroundColor = "white";
+        if (cellValue === "X") {
+          backgroundColor = "yellow";
+        } 
+        else if (cellValue === "O") {
+          backgroundColor = "red";
         }
+        let cell = `<div class="board-cell" data-row="${i}" data-col="${j}" style="background-color:${backgroundColor}">${cellValue}</div>`;
+        document.write(cell);
+      }
     }
     document.write('</div>');
     document.write('</div>');
@@ -405,6 +406,13 @@ class Checkers extends gameEngine{
           box-shadow: 0 0 30px #626b74; /* Add a subtle box shadow */
           background-color: #fff; /* Add a white background color */
         }
+        #pos{
+          position: relative;
+          bottom: 40%;
+          right: 35%;
+          color: #191919;
+          font-size: 0.65rem;
+        }
         .board-cell {
           display: flex;
           justify-content: center;
@@ -434,22 +442,21 @@ class Checkers extends gameEngine{
         let cellClasses = 'board-cell';
         if ((i + j) % 2 === 0) {
           cellClasses += ' white';
-        } else {
+        } 
+        else {
           cellClasses += ' black';
         }
-       let cellImgSrc = '';
-       switch(cellValue) {
+        let cellImgSrc = '';
+        switch(cellValue) {
          case 'w':
-           cellImgSrc = 'images/white.png';
-           break;
+          cellImgSrc = 'images/white.png';
+          break;
          case 'b':
-           cellImgSrc = 'images/black.png';
-           break;
-         default:
-           cellImgSrc = ''; 
-       }
-      let cell = `<div class="${cellClasses}" style="background-image: url('${cellImgSrc}')" data-row="${i}" data-col="${j}"></div>`; 
-      document.write(cell);
+          cellImgSrc = 'images/black.png';
+          break;
+        }
+        let cell = `<div class="${cellClasses}" style="background-image: url('${cellImgSrc}')" data-row="${i}" data-col="${j}"><span id="pos">${i}${j}</span></div>`; 
+        document.write(cell);
       }
     }
     document.write('</div></div>');
@@ -553,6 +560,13 @@ class Chess extends gameEngine{
           box-shadow: 0 0 30px #626b74; /* Add a subtle box shadow */
           background-color: #fff; /* Add a white background color */
         }
+        #pos{
+          position: relative;
+          bottom: 43%;
+          right: 37%;
+          color: #191919;
+          font-size: 0.6rem;
+        }
         .board-cell {
           display: flex;
           justify-content: center;
@@ -585,8 +599,8 @@ class Chess extends gameEngine{
         } else {
           cellClasses += ' black';
         }
-       let cellImgSrc = '';
-       switch(cellValue) {
+        let cellImgSrc = '';
+        switch(cellValue) {
          case 'K':
            cellImgSrc = 'images/Bking.png';
            break;
@@ -623,11 +637,9 @@ class Chess extends gameEngine{
          case 'p':
            cellImgSrc = 'images/Wpawn.png';
            break;
-         default:
-           cellImgSrc = ''; 
-       }
-      let cell = `<div class="${cellClasses}" style="background-image: url('${cellImgSrc}')" data-row="${i}" data-col="${j}"></div>`; 
-      document.write(cell);
+        }
+        let cell = `<div class="${cellClasses}" style="background-image: url('${cellImgSrc}')" data-row="${i}" data-col="${j}"><span id="pos">${i}${j}</span></div>`; 
+        document.write(cell);
       }
     }
     document.write('</div></div>');
@@ -955,6 +967,14 @@ class Sudoku extends gameEngine{
           box-shadow: 0 0 30px #626b74; /* Add a subtle box shadow */
         }
         
+        #pos{
+          position: relative;
+          bottom: 40%;
+          right: 35%;
+          color: #191919;
+          font-size: 0.55rem;
+        }
+
         .board-cell {
           display: flex;
           font-size: 20px;
@@ -984,6 +1004,9 @@ class Sudoku extends gameEngine{
     document.write('<div class="board">');
     for (let i = 0; i < 9; i++) {
       for (let j = 0; j < 9; j++) {
+        if(board[i][j] === ' '){
+          document.write(`<div class="board-cell" data-row="${i}" data-col="${j}"><span id="pos">${i}${j}</span></div>`); continue;
+        }
         document.write(`<div class="board-cell" data-row="${i}" data-col="${j}">${board[i][j]}</div>`);
       }
     }
@@ -1077,6 +1100,13 @@ class EightQueens extends gameEngine{
           box-shadow: 0 0 30px #626b74; /* Add a subtle box shadow */
           background-color: #fff; /* Add a white background color */
         }
+        #pos{
+          position: relative;
+          bottom: 43%;
+          right: 37%;
+          color: #191919;
+          font-size: 0.6rem;
+        }
         .board-cell {
           display: flex;
           justify-content: center;
@@ -1102,21 +1132,18 @@ class EightQueens extends gameEngine{
     document.write('<div class="board">');
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
-        let cellValue = board[i][j];
         let cellClasses = 'board-cell';
-        let cellImgSrc='';
-        if(board[i][j]=='Q'){
-           cellImgSrc ='images/Bqueen.png';
-        }else if(board[i][j]=='n'){
-            
-        }
         if ((i + j) % 2 === 0) {
           cellClasses += ' white';
         } else {
           cellClasses += ' black';
         }
-        let cell = `<div class="${cellClasses}" style="background-image: url('${cellImgSrc}')" data-row="${i}" data-col="${j}"></div>`;
-      document.write(cell);
+        let cellImgSrc='';
+        if(board[i][j]=='Q'){
+          cellImgSrc ='images/Bqueen.png';
+        }
+        let cell = `<div class="${cellClasses}" style="background-image: url('${cellImgSrc}')" data-row="${i}" data-col="${j}"><span id="pos">${i}${j}</span></div>`;
+        document.write(cell);
       }
     }
     document.write('</div></div>');
