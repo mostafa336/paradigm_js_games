@@ -95,6 +95,7 @@ async Game_loop(){
    await new Promise(resolve => setTimeout(resolve, 500));
    let play = true;
    while(play){
+     let result=null;
      switch(check){
        //XO
        case(1):{
@@ -103,15 +104,7 @@ async Game_loop(){
            play = false; break;
          }
          let col = prompt('Please, Enter a cell column');
-         const result=game.controller(this.board,row, col,this.playerTurn);
-         if(result.f!=7){
-                 Alerts(result.f);
-         }else if(result.f==7){
-           this.board=result.BD;
-           console.log(this.board);
-           game.drawer(this.board);
-           this.playerTurn=!this.playerTurn;
-         }
+         result=game.controller(this.board,row, col,this.playerTurn);
          break;
        }
        //connect4
@@ -120,20 +113,20 @@ async Game_loop(){
          if(col === 'E'){
            play = false; break;
          }
-         const result=game.controller(this.board, col,this.playerTurn);
-         if(result.f!=7){
-                 Alerts(result.f);
-         }else if(result.f==7){
-           this.board=result.BD;
-           console.log(this.board);
-           game.drawer(this.board);
-           this.playerTurn=!this.playerTurn;
-         }
+         result=game.controller(this.board, col,this.playerTurn);
          break;
        }
        //checker
        case(3):{
-         break;
+        let fromRow = prompt('Please, Enter a cell row to move from (enter E to Exit)');
+        if(fromRow === 'E'){
+          play = false; break;
+        }
+        let fromCol = prompt('Please, Enter a cell column to move from');
+        let toRow = prompt('Please, Enter a cell row to move to');
+        let toCol = prompt('Please, Enter a cell column to move to');
+        result=game.controller(this.board,fromRow, fromCol, toRow, toCol,this.playerTurn);
+        break;
        }
        //chess
        case(4):{
@@ -144,15 +137,7 @@ async Game_loop(){
          let fromCol = prompt('Please, Enter a cell column to move from');
          let toRow = prompt('Please, Enter a cell row to move to');
          let toCol = prompt('Please, Enter a cell column to move to');
-         const result=game.controller(this.board,fromRow, fromCol, toRow, toCol,this.playerTurn);
-         if(result.f!=7){
-                 Alerts(result.f);
-         }else if(result.f==7){
-           this.board=result.BD;
-           console.log(this.board);
-           game.drawer(this.board);
-           this.playerTurn=!this.playerTurn;
-         }
+         result=game.controller(this.board,fromRow, fromCol, toRow, toCol,this.playerTurn);
          break;
        }
        //sudoko
@@ -163,15 +148,7 @@ async Game_loop(){
          }
          let col = prompt('Please, Enter a cell column');
          let num = prompt('Please, Enter a number from 1 to 9');
-         const result= game.controller(this.board,row, col, num);
-         console.log(`REsult.f : `,result.f);
-         if(result.f!=7){
-               Alerts(result.f);
-         }else if(result.f==7){
-           this.board=result.BD;
-           console.log(this.board);
-           game.drawer(this.board);
-         }
+         result= game.controller(this.board,row, col, num);
          break;
        }
        //8-queens
@@ -181,21 +158,23 @@ async Game_loop(){
            play = false; break;
          }
          let Col = prompt('Please, Enter a cell column');
-         const result=game.controller(this.board,Row,Col);
-         if(result.f!=7){
-                 Alerts(result.f);
-         }else if(result.f==7){
-           this.board=result.BD;
-           console.log(this.board);
-           game.drawer(this.board);
-         }
+         result=game.controller(this.board,Row,Col);
          break;
        }
      }
+     if(result.f!=7){
+            Alerts(result.f);
+     }else if(result.f==7){
+        this.board=result.BD;
+        game.drawer(this.board);
+        this.playerTurn=!this.playerTurn;
+     }
     await new Promise(resolve => setTimeout(resolve, 500));
    }
- }
+  }
+
 }
+
 }
 
 
@@ -436,6 +415,60 @@ class Checkers extends gameEngine{
     document.write('</div></div>');
     document.close();
   }
+  controller(board,fromRow, fromCol, toRow, toCol,playerTurn) {
+    fromRow = parseInt(fromRow); fromCol = parseInt(fromCol);
+    toRow = parseInt(toRow); toCol = parseInt(toCol);
+    if(isNaN(fromRow) || isNaN(fromCol) || isNaN(toRow) || isNaN(toCol) || fromRow > 7 || fromRow < 0 || fromCol > 7 || fromCol < 0 || toRow > 7 || toRow < 0 || toCol > 7 || toCol < 0){
+      //alert('Wrong Input');
+      return { BD: board, f: 0 };
+    }
+    else if( board[fromRow][fromCol]!='b' && board[fromRow][fromCol]!='w') {
+              return { BD: board, f: 2 };
+    }
+    else if( (playerTurn && board[fromRow][fromCol]=='b') ||
+          (!playerTurn && board[fromRow][fromCol]=='w') ){
+                
+                 if(board[fromRow][fromCol]=='b'){
+                      if( fromRow+1==toRow && (fromCol+1==toCol || fromCol-1== toCol) && board[toRow][toCol]==' '){
+                          board[toRow][toCol]=board[fromRow][fromCol];
+                          board[fromRow][fromCol]=' ';
+                          return { BD: board, f: 7 };
+                      }else if( fromRow+2==toRow &&( (fromCol+2==toCol &&board[fromRow+1][fromCol+1]=='w')
+                              ||(fromCol-2==toCol && board[fromRow+1][fromCol-1]=='w') )
+                              && board[toRow][toCol]==' '){
+                          if(toCol<fromCol){board[fromRow+1][fromCol-1]=' ';}        
+                          else{ board[fromRow+1][fromCol+1]=' ';}
+                          board[toRow][toCol]=board[fromRow][fromCol];
+                          board[fromRow][fromCol]=' ';
+                          return { BD: board, f: 7 };
+                      }else{
+                        return { BD: board, f: 6 };
+                      }
+
+                }else if(board[fromRow][fromCol]=='w'){
+                  if( fromRow-1==toRow && (fromCol+1==toCol || fromCol-1== toCol) && board[toRow][toCol]==' '){
+                      board[toRow][toCol]=board[fromRow][fromCol];
+                      board[fromRow][fromCol]=' ';
+                      return { BD: board, f: 7 };
+
+                  }else if( fromRow-2==toRow &&( (fromCol+2==toCol &&board[fromRow-1][fromCol+1]=='b')
+                          ||(fromCol-2==toCol && board[fromRow-1][fromCol-1]=='b') )
+                            && board[toRow][toCol]==' '){
+                      if(toCol<fromCol){board[fromRow-1][fromCol-1]=' ';}        
+                      else{ board[fromRow-1][fromCol+1]=' ';}
+                      board[toRow][toCol]=board[fromRow][fromCol];
+                      board[fromRow][fromCol]=' ';
+                      return { BD: board, f: 7 };
+                  }else{
+                    return { BD: board, f: 6 };
+                  }
+                }
+    }else{
+      return { BD: board, f: 3 };
+    }
+
+  }
+ 
 }
 
 class Chess extends gameEngine{
@@ -1057,7 +1090,6 @@ function Alerts(i){
   else if(i==8){alert('Wrong Play...');}
   else if(i==9){alert(`cannot choose this place`);}
 }
-
 
 //Run code
 const start= new gameEngine;
