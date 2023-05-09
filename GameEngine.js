@@ -162,12 +162,14 @@ async Game_loop(){
          break;
        }
      }
-     if(result.f!=7){
-            Alerts(result.f);
-     }else if(result.f==7){
-        this.board=result.BD;
-        game.drawer(this.board);
-        this.playerTurn=!this.playerTurn;
+     if(play==true){
+        if(result.f!=7){
+                Alerts(result.f);
+        }else if(result.f==7){
+            this.board=result.BD;
+            game.drawer(this.board);
+            this.playerTurn=!this.playerTurn;
+        }
      }
     await new Promise(resolve => setTimeout(resolve, 500));
    }
