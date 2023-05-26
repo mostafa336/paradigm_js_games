@@ -1,4 +1,8 @@
 class EightQueens extends GameEngine {
+  constructor() {
+    super();
+    this.gameStarted = false;
+  }
   drawer(board) {
     document.open();
     document.write(`
@@ -19,7 +23,6 @@ class EightQueens extends GameEngine {
           }
           .board {
             display: grid;
-            margin-left: 10px;
             grid-template-columns: repeat(8, 70px);
             grid-template-rows: repeat(8, 70px);
             background-color: #d1a05f;
@@ -55,9 +58,57 @@ class EightQueens extends GameEngine {
           .selected {
             background-color: #ffffcc !important;
           }
-        </style>
-      `);
+    `);
 
+    if (this.gameStarted) {
+      document.write(`
+        .container {
+          display: flex;
+          margin-left: 10px;
+          justify-content: center;
+          align-items: center;
+          height: 100vh; /* Adjust the height as needed */
+        }
+        .fancy-button {
+          display: inline-block;
+          border: none;
+          background-color: #676568;
+          color: white;
+          text-align: center;
+          font-size: 16px;
+          padding: 20px 10px;
+          border-radius: 4px;
+        }
+      </style>
+      `);
+    } else {
+      document.write(`
+        .container {
+          display: flex;
+          margin-left: 10px;
+          justify-content: center;
+          align-items: center;
+          height: 100vh; /* Adjust the height as needed */
+        }
+        .fancy-button {
+          display: inline-block;
+          border: none;
+          background-color: #4CAF50;
+          color: white;
+          text-align: center;
+          font-size: 16px;
+          padding: 20px 10px;
+          cursor: pointer;
+          border-radius: 4px;
+          transition-duration: 0.4s;
+          box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+        }
+        .fancy-button:hover {
+          background-color: #45a049;
+        }
+      </style>
+      `);
+    }
     document.write("<title>8 Queens</title>");
     document.write('<div class="board-container">');
     document.write('<div class="board">');
@@ -77,7 +128,20 @@ class EightQueens extends GameEngine {
         document.write(cell);
       }
     }
-    document.write("</div></div>");
+    document.write("</div>");
+    document.write(`
+      <div class="container">
+        <button class="fancy-button">Solve</button>
+      </div>
+    `);
+    document.write("</div>");
+    if (!this.gameStarted) {
+      this.gameStarted = true;
+      const fancyButton = document.querySelector(".fancy-button");
+      fancyButton.addEventListener("click", function () {
+        console.log("Button clicked!");
+      });
+    }
     document.close();
   }
 
@@ -112,6 +176,7 @@ class EightQueens extends GameEngine {
           }
         }
       }
+      this.gameStarted = true;
       return { BD: board, f: true };
     }
   }

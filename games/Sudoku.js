@@ -1,4 +1,8 @@
 class Sudoku extends GameEngine {
+  constructor() {
+    super();
+    this.gameStarted = false;
+  }
   drawer(board) {
     document.open();
     document.write(`
@@ -59,8 +63,58 @@ class Sudoku extends GameEngine {
           .board-cell[data-col="8"] {
             border-right-width: 3px;
           }
-        </style>
       `);
+
+    if (this.gameStarted) {
+      document.write(`
+        .container {
+          display: flex;
+          margin-left: 10px;
+          justify-content: center;
+          align-items: center;
+          height: 100vh; /* Adjust the height as needed */
+        }
+        .fancy-button {
+          display: inline-block;
+          border: none;
+          background-color: #676568;
+          color: white;
+          text-align: center;
+          font-size: 16px;
+          padding: 20px 10px;
+          border-radius: 4px;
+        }
+      </style>
+      `);
+    } 
+    else {
+      document.write(`
+        .container {
+          display: flex;
+          margin-left: 10px;
+          justify-content: center;
+          align-items: center;
+          height: 100vh; /* Adjust the height as needed */
+        }
+        .fancy-button {
+          display: inline-block;
+          border: none;
+          background-color: #4CAF50;
+          color: white;
+          text-align: center;
+          font-size: 16px;
+          padding: 20px 10px;
+          cursor: pointer;
+          border-radius: 4px;
+          transition-duration: 0.4s;
+          box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+        }
+        .fancy-button:hover {
+          background-color: #45a049;
+        }
+      </style>
+      `);
+    }
 
     document.write("<title>Sudoku</title>");
     document.write('<div class="board-container">');
@@ -79,7 +133,66 @@ class Sudoku extends GameEngine {
       }
     }
     document.write("</div>");
+    document.write(`
+      <div class="container">
+        <button class="fancy-button">Solve</button>
+      </div>
+    `);
     document.write("</div>");
+
+    if (!this.gameStarted) {
+      this.gameStarted = true;
+      // const fancyButton = document.querySelector(".fancy-button");
+      // fancyButton.addEventListener("click", function () {
+      //   const session = create();
+      //   const knowledgeBase = `
+      //           :- use_module(library(clpfd)).
+      //           sudoku(Rows) :-
+      //               length(Rows, 9),
+      //               maplist(same_length(Rows), Rows),
+      //               append(Rows, Vs),
+      //               Vs ins 1..9,
+      //               maplist(all_distinct, Rows),
+      //               transpose(Rows, Columns),
+      //               maplist(all_distinct, Columns),
+      //               Rows = [As, Bs, Cs, Ds, Es, Fs, Gs, Hs, Is],
+      //               squares(As, Bs, Cs),
+      //               squares(Ds, Es, Fs),
+      //               squares(Gs, Hs, Is).
+
+      //           squares([], [], []).
+      //           squares([N1, N2, N3|Ns1],
+      //                   [N4, N5, N6|Ns2],
+      //                   [N7, N8, N9|Ns3]) :-
+      //               all_distinct([N1, N2, N3, N4, N5, N6, N7, N8, N9]),
+      //               squares(Ns1, Ns2, Ns3).
+      //           `;
+      //   session.consult(knowledgeBase);
+
+      //   let boardStr = "[";
+      //   for (let i = 0; i < 9; i++) {
+      //     if (i) boardStr += ",";
+      //     boardStr += "[";
+      //     for (let j = 0; j < 9; j++) {
+      //       if (j) boardStr += ",";
+      //       boardStr += board[i][j] === " " ? "_" : board[i][j];
+      //     }
+      //     boardStr += "]";
+      //   }
+      //   boardStr += "]";
+
+      //   const query =
+      //     "Rows = " +
+      //     boardStr +
+      //     ", sudoku(Rows), maplist(label, Rows),maplist(portray_clause, Rows).";
+
+      //   session.answer({
+      //     success: function (answer) {
+      //       console.log(session.format_answer(answer));
+      //     },
+      //   });
+      // });
+    }
   }
 
   checkRow(board, row, num) {
@@ -150,6 +263,7 @@ class Sudoku extends GameEngine {
       return { BD: board, f: false };
     }
     //Done
+    this.gameStarted = true;
     return { BD: board, f: true };
   }
 }
